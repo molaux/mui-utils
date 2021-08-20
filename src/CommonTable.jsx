@@ -15,7 +15,7 @@ import {
   ArrowUpward as SortAscIcon
 } from '@material-ui/icons'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/styles'
 import isEqual from 'fast-deep-equal/es6/react'
 import Table from './TableResponsive'
 

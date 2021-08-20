@@ -1,5 +1,5 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/styles'
 import UpstreamTabs from '@material-ui/core/Tabs'
 import UpstreamTab from '@material-ui/core/Tab'
 

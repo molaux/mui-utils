@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Collapse from '@material-ui/core/Collapse'
 import Paper from '@material-ui/core/Paper'
 
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/styles'
 
 class ExpandableListItem extends Component {
   state = {

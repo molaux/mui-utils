@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Alert from '@material-ui/core/Alert'
 import AlertTitle from '@material-ui/core/AlertTitle'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles((theme) => ({
   gutterTop: {

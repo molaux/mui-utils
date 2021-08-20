@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Tooltip } from '@material-ui/core'
 import Zoom from '@material-ui/core/Zoom'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/styles'
 
 import { StatusTypography } from './StatusTypography'
 

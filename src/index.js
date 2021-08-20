@@ -19,3 +19,5 @@ export { TabPanel } from './TabPanel'
 
 export { NoPic } from './NoPic'
 export { BooleanIcon } from './BooleanIcon'
+
+export { useWidth } from './useWidth'

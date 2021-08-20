@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Grid from '@material-ui/core/Grid'
 
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/styles'
 
 const Center = ({ height, classes, className, style, children }) => (
   <Grid
