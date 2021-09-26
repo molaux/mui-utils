@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import ImageIcon from '@material-ui/icons/Image'
+import ImageIcon from '@mui/icons-material/Image'
 
 const NoPic = ({ className }) => (
   <div className={className}>

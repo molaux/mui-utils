@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Yes from '@material-ui/icons/CheckCircle'
-import No from '@material-ui/icons/Cancel'
+import Yes from '@mui/icons-material/CheckCircle'
+import No from '@mui/icons-material/Cancel'
 
 const BooleanIcon = ({ state }) => (
   state

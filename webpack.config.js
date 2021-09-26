@@ -33,6 +33,6 @@ module.exports = {
       "@apollo/client/react/hoc": "@apollo/client/react/hoc",
       "react-router-dom": "react-router-dom",
     },
-    /@material-ui\/.*/,
+    /@mui\/.*/,
   ]
 };

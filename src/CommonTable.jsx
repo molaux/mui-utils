@@ -1,21 +1,21 @@
 import React, { useCallback, useState, memo, useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import Button from '@material-ui/core/Button'
-import TablePagination from '@material-ui/core/TablePagination'
-import LinearProgress from '@material-ui/core/LinearProgress'
-import Box from '@material-ui/core/Box'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Button from '@mui/material/Button'
+import TablePagination from '@mui/material/TablePagination'
+import LinearProgress from '@mui/material/LinearProgress'
+import Box from '@mui/material/Box'
 
 import {
   ArrowDownward as SortDescIcon,
   ArrowUpward as SortAscIcon
-} from '@material-ui/icons'
+} from '@mui/icons-material'
 
-import { makeStyles } from '@material-ui/styles'
+import { makeStyles } from '@mui/styles'
 import isEqual from 'fast-deep-equal/es6/react'
 import Table from './TableResponsive'
 

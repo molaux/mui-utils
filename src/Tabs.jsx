@@ -1,7 +1,7 @@
 import React from 'react'
-import { withStyles } from '@material-ui/styles'
-import UpstreamTabs from '@material-ui/core/Tabs'
-import UpstreamTab from '@material-ui/core/Tab'
+import { withStyles } from '@mui/styles'
+import UpstreamTabs from '@mui/material/Tabs'
+import UpstreamTab from '@mui/material/Tab'
 
 export const Tabs = withStyles((theme) => ({
   root: {

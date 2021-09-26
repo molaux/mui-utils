@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Alert from '@material-ui/core/Alert'
-import AlertTitle from '@material-ui/core/AlertTitle'
-import { makeStyles } from '@material-ui/styles'
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
+import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles((theme) => ({
   gutterTop: {

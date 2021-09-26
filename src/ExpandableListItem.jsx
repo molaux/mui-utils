@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItem from '@material-ui/core/ListItem'
-import List from '@material-ui/core/List'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Collapse from '@material-ui/core/Collapse'
-import Paper from '@material-ui/core/Paper'
+import ListItemText from '@mui/material/ListItemText'
+import ListItem from '@mui/material/ListItem'
+import List from '@mui/material/List'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Collapse from '@mui/material/Collapse'
+import Paper from '@mui/material/Paper'
 
-import { withStyles } from '@material-ui/styles'
+import { withStyles } from '@mui/styles'
 
 class ExpandableListItem extends Component {
   state = {

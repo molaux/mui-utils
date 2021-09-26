@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Tooltip } from '@material-ui/core'
-import Zoom from '@material-ui/core/Zoom'
+import { Tooltip } from '@mui/material'
+import Zoom from '@mui/material/Zoom'
 
-import { makeStyles } from '@material-ui/styles'
+import { makeStyles } from '@mui/styles'
 
 import { StatusTypography } from './StatusTypography'
 

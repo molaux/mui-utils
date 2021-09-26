@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Box from '@material-ui/core/Box'
-import { useTheme } from '@material-ui/core/styles'
-import TrendingDownIcon from '@material-ui/icons/TrendingDown'
-import TrendingUpIcon from '@material-ui/icons/TrendingUp'
-import TrendingFlatIcon from '@material-ui/icons/TrendingFlat'
+import Box from '@mui/material/Box'
+import { useTheme } from '@mui/material/styles'
+import TrendingDownIcon from '@mui/icons-material/TrendingDown'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat'
 
 const VariationValue = ({ value }) => (
   <>
