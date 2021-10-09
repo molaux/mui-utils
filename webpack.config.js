@@ -1,6 +1,7 @@
 var path = require('path');
 module.exports = {
   entry: './src/index.js',
+  devtool: 'cheap-source-map',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'index.js',
@@ -34,5 +35,8 @@ module.exports = {
       "react-router-dom": "react-router-dom",
     },
     /@mui\/.*/,
-  ]
+  ],
+  optimization: {
+    nodeEnv: false
+  }
 };
