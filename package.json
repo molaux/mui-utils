@@ -1,6 +1,6 @@
 {
   "name": "@molaux/mui-utils",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A collection of helper components built with material UI",
   "main": "build/index.js",
   "scripts": {
@@ -8,11 +8,12 @@
     "build": "webpack --mode=production"
   },
   "dependencies": {
+    "color": "^4.0.1",
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "@mui/material": "^5.0.1",
     "@mui/icons-material": "^5.0.1",
+    "@mui/material": "^5.0.1",
     "@mui/styles": "^5.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

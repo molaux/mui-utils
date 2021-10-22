@@ -1,6 +1,7 @@
 import React, { useCallback, useState, memo, useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
+import Color from 'color'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
@@ -9,6 +10,11 @@ import Button from '@mui/material/Button'
 import TablePagination from '@mui/material/TablePagination'
 import LinearProgress from '@mui/material/LinearProgress'
 import Box from '@mui/material/Box'
+
+import Collapse from '@mui/material/Collapse'
+import IconButton from '@mui/material/IconButton'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
 import {
   ArrowDownward as SortDescIcon,
@@ -36,6 +42,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+const Collapsable = ({ open, children }) => open !== undefined
+  ? (
+  <Collapse in={open} timeout="auto" unmountOnExit sx={(theme) => ({ paddingTop: theme.spacing(2), paddingBottom: theme.spacing(2) })}>
+    {children}
+  </Collapse>
+  )
+  : children ?? null
+
 const Row = memo(({
   backgroundColor,
   headers,
@@ -44,43 +58,99 @@ const Row = memo(({
   alignCell,
   verticalAlignCell,
   virtualRowClass,
-  borderLeftStyle
-}) => (
-  <>
-    {Object.keys(headers)
-      .sort()
-      .map((line) => (
-        <TableRow
-          key={line}
-          style={{
-            ...(borderLeftStyle(row) !== null
-              ? { borderLeft: borderLeftStyle(row) }
-              : {}),
-            ...(backgroundColor(row) !== null
-              ? { backgroundColor: backgroundColor(row) }
-              : {})
-          }}
-          className={(parseInt(line, 10) + 1) >= Object.keys(headers).length
-            ? null
-            : virtualRowClass}
-        >
-          {Object.keys(headers[line]).map((header, index) => (
-            <TableCell
-              // eslint-disable-next-line react/no-array-index-key
-              key={index}
-              align={alignCell(header)}
-              sx={{ verticalAlign: verticalAlignCell(header) }}
-              component={rowHeaders.includes(header) ? 'th' : 'td'}
-              {...headers[line][header]}
-              {...(index === Object.keys(headers[line]).length - 1 ? { colSpan: 5000 } : {})}
+  borderLeftStyle,
+  expandable,
+  collapsable,
+  controlledOpen,
+  nesting
+}) => {
+  const [open, setOpen] = React.useState(false)
+  return (
+    <>
+      {Object.keys(headers)
+        .sort()
+        .map((line) => (
+          <>
+            <TableRow
+              key={line}
+              sx={(theme) => ({
+                ...(borderLeftStyle(row) !== null
+                  ? { borderLeft: borderLeftStyle(row) }
+                  : {}),
+                ...(backgroundColor(row) !== null
+                  ? { backgroundColor: backgroundColor(row) }
+                  : { backgroundColor: Color(theme.palette.background.paper).darken((nesting ?? 0)/20).hex() })
+              })}
+              className={(parseInt(line, 10) + 1) >= Object.keys(headers).length
+                ? null
+                : virtualRowClass}
             >
-              {row[header]}
-            </TableCell>
-          ))}
-        </TableRow>
-      ))}
-  </>
-), isEqual)
+              {expandable ? (
+                <TableCell style={controlledOpen !== undefined ? { paddingBottom: 0, paddingTop: 0, ...(controlledOpen !== true ? { borderBottom: 'unset' } : {}) } : {}}>
+                  <Collapsable open={controlledOpen}>
+                    {row.expand ? (
+                      <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => setOpen(!open)}
+                      >
+                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                      </IconButton>
+                    ) : null}
+                  </Collapsable>
+                </TableCell>
+              ) : null}
+              {Object.keys(headers[line]).map((header, index) => (
+                <TableCell
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={index}
+                  align={alignCell(header)}
+                  sx={{ verticalAlign: verticalAlignCell(header), ...(controlledOpen !== undefined ? { paddingBottom: 0, paddingTop: 0, ...(controlledOpen !== true ? { borderBottom: 'unset' } : {})  } : {}) }}
+                  component={rowHeaders.includes(header) ? 'th' : 'td'}
+                  {...headers[line][header]}
+                  {...(index === Object.keys(headers[line]).length - 1 ? { colSpan: 5000 } : {})}
+                >
+                  <Collapsable open={controlledOpen}>
+                    {row[header]}
+                  </Collapsable>
+                </TableCell>
+              ))}
+            </TableRow>
+            {expandable && row.expand
+              ? (
+                expandable === 'custom'
+                  ? (
+                    <TableRow>
+                      <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5000}>
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                          {row.expand} 
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                  )
+                  : row.expand.map((row) => (
+                    <Row
+                      backgroundColor={backgroundColor}
+                      headers={headers}
+                      rowHeaders={rowHeaders}
+                      row={row}
+                      alignCell={alignCell}
+                      verticalAlignCell={verticalAlignCell}
+                      virtualRowClass={virtualRowClass}
+                      borderLeftStyle={borderLeftStyle}
+                      expandable={expandable}
+                      controlledOpen={(controlledOpen !== undefined ? controlledOpen : true) && open}
+                      nesting={(nesting ?? 0) + 1}
+                    />
+                  ))
+              )
+              : null}
+          </>
+        ))}
+    </>
+    )
+  }
+, isEqual)
 
 Row.propTypes = {
   backgroundColor: PropTypes.func,
@@ -166,7 +236,8 @@ const CommonTable = ({
   controlledRowsPerPage,
   controlledRowsPerPageOptions,
   controlledTotal,
-  loading
+  loading,
+  expandable
 }) => {
   const classes = useStyles()
   align = useMemo(() => align, [])
@@ -178,7 +249,7 @@ const CommonTable = ({
   const verticalAlignCell = useCallback((key) => (verticalAlign !== undefined && verticalAlign[key] !== undefined ? verticalAlign[key] : 'middle'), [verticalAlign])
   const [headers, setHeaders] = useState(rows.length
     ? buildVirtualRowsMap(Object.keys(rows[0])
-      .filter((h) => !statedHide.includes(h)), statedVirtualRowsMapProp)
+      .filter((h) => !statedHide.includes(h) && (!expandable || h !== 'expand')), statedVirtualRowsMapProp)
     : {})
   const [page, setPage] = React.useState(0)
   const rowsPerPageOptions = controlledRowsPerPageOptions || [25, 50, 100, { value: -1, label: 'Tout' }]
@@ -209,7 +280,7 @@ const CommonTable = ({
 
   useEffect(() => {
     const newHeaders = rows.length
-      ? Object.keys(rows[0]).filter((h) => !statedHide.includes(h))
+      ? Object.keys(rows[0]).filter((h) => !statedHide.includes(h) && (!expandable || h !== 'expand'))
       : []
 
     const newVirtualRowsMap = buildVirtualRowsMap(newHeaders, statedVirtualRowsMapProp)
@@ -278,6 +349,7 @@ const CommonTable = ({
               <Table className={classes.table + (noWrap ? ` ${classes.noWrap}` : '')} aria-label="simple table">
                 <TableHead>
                   <TableRow>
+                    {expandable ? <TableCell /> : null}
                     {Object.keys(headers[0])
                       .map((header, index) => (
                         <TableCell
@@ -322,6 +394,7 @@ const CommonTable = ({
                       alignCell={alignCell}
                       verticalAlignCell={verticalAlignCell}
                       virtualRowClass={classes.virtualRow}
+                      expandable={expandable}
                     />
                   ))}
                 </TableBody>
