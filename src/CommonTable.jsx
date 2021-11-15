@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Collapsable = ({ open, children }) => open !== undefined
   ? (
-  <Collapse in={open} timeout="auto" unmountOnExit sx={(theme) => ({ paddingTop: theme.spacing(2), paddingBottom: theme.spacing(2) })}>
+  <Collapse in={open} timeout="auto" unmountOnExit sx={{ paddingTop: (theme) => theme.spacing(2), paddingBottom: (theme) => theme.spacing(2) }}>
     {children}
   </Collapse>
   )
@@ -69,18 +69,17 @@ const Row = memo(({
     <>
       {Object.keys(headers)
         .sort()
-        .map((line) => (
-          <>
+        .map((line) => [
             <TableRow
               key={line}
-              sx={(theme) => ({
+              sx={{
                 ...(borderLeftStyle(row) !== null
                   ? { borderLeft: borderLeftStyle(row) }
                   : {}),
                 ...(backgroundColor(row) !== null
                   ? { backgroundColor: backgroundColor(row) }
-                  : { backgroundColor: Color(theme.palette.background.paper).darken((nesting ?? 0)/20).hex() })
-              })}
+                  : { backgroundColor: (theme) => Color(theme.palette.background.paper).darken((nesting ?? 0)/20).hex() })
+              }}
               className={(parseInt(line, 10) + 1) >= Object.keys(headers).length
                 ? null
                 : virtualRowClass}
@@ -115,12 +114,12 @@ const Row = memo(({
                   </Collapsable>
                 </TableCell>
               ))}
-            </TableRow>
-            {expandable && row.expand
+            </TableRow>,
+            expandable && row.expand
               ? (
                 expandable === 'custom'
                   ? (
-                    <TableRow>
+                    <TableRow key={`${line}-expansion`}>
                       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5000}>
                         <Collapse in={open} timeout="auto" unmountOnExit>
                           {row.expand} 
@@ -128,8 +127,9 @@ const Row = memo(({
                       </TableCell>
                     </TableRow>
                   )
-                  : row.expand.map((row) => (
+                  : row.expand.map((row, i) => (
                     <Row
+                      key={i}
                       backgroundColor={backgroundColor}
                       headers={headers}
                       rowHeaders={rowHeaders}
@@ -144,9 +144,8 @@ const Row = memo(({
                     />
                   ))
               )
-              : null}
-          </>
-        ))}
+              : null
+      ])}
     </>
     )
   }
