@@ -16,10 +16,9 @@ import IconButton from '@mui/material/IconButton'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
-import {
-  ArrowDownward as SortDescIcon,
-  ArrowUpward as SortAscIcon
-} from '@mui/icons-material'
+import SortDescIcon from '@mui/icons-material/ArrowDownward'
+import SortAscIcon from '@mui/icons-material/ArrowUpward'
+
 
 import { makeStyles } from '@mui/styles'
 import isEqual from 'fast-deep-equal/es6/react'
