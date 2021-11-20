@@ -2,11 +2,20 @@ var path = require('path');
 module.exports = {
   entry: './src/index.js',
   devtool: 'cheap-source-map',
+  // experiments: {
+  //   outputModule: true,
+  // },
+  // externalsPresets: {
+  //   web: false,
+  //   webAsync: true
+  // },
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'index.js',
-    libraryTarget: 'commonjs2'
+    "library": { type: "commonjs2" },
+    // environment: { module: true }
   },
+  // "externalsType": "module",
   resolve: {
     extensions: ['.js', '.jsx']
   },
@@ -19,12 +28,15 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [["@babel/env", {
-              targets: {
-                browsers: ['last 2 versions'],
-              },
-              modules: false,
-            }]],
+            presets: [
+              ["@babel/preset-env", {
+                targets: {
+                  browsers: ['last 2 versions, not dead'],
+                  // esmodules: true
+                },
+                modules: false
+              }]
+            ],
             plugins: [
               "transform-object-rest-spread",
               "@babel/transform-react-jsx",
