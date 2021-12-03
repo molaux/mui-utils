@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import ListItemText from '@mui/material/ListItemText'
 import ListItem from '@mui/material/ListItem'
@@ -7,78 +7,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Collapse from '@mui/material/Collapse'
 import Paper from '@mui/material/Paper'
 
-import { withStyles } from '@mui/styles'
+import { makeStyles } from '@mui/styles'
 
-class ExpandableListItem extends Component {
-  state = {
-    expanded: false
-  }
-
-  handleExpandClick () {
-    this.setState((state) => ({ expanded: !state.expanded }))
-  }
-
-  render () {
-    const { classes, title, subTitle, children, noBorder, icons, states } = this.props
-    const { expanded } = this.state
-    return (
-      <Paper square className={noBorder ? classes.panelBorder : null}>
-        <List className={classes.headerPadding}>
-          <ListItem onClick={() => this.handleExpandClick()} button>
-            {icons}
-            <ListItemText
-              primary={title}
-              secondary={subTitle}
-              className={classes.headerText}
-            />
-            {states}
-            <div
-              className={`${classes.expand} ${classes.expandIcon} ${expanded ? classes.expandOpen : null}`}
-            >
-              <span className={classes.expandLabel}>
-                <ExpandMoreIcon />
-              </span>
-            </div>
-          </ListItem>
-        </List>
-        <Collapse in={expanded} unmountOnExit>
-          {children}
-        </Collapse>
-      </Paper>
-    )
-  }
-}
-
-ExpandableListItem.propTypes = {
-  classes: PropTypes.shape({
-    panelBorder: PropTypes.string,
-    headerPadding: PropTypes.string,
-    headerText: PropTypes.string,
-    expand: PropTypes.string,
-    expandIcon: PropTypes.string,
-    expandLabel: PropTypes.string,
-    expandOpen: PropTypes.string
-  }).isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]),
-  title: PropTypes.node.isRequired,
-  subTitle: PropTypes.string,
-  noBorder: PropTypes.bool,
-  icons: PropTypes.arrayOf(PropTypes.element),
-  states: PropTypes.element
-}
-
-ExpandableListItem.defaultProps = {
-  children: null,
-  noBorder: false,
-  subTitle: undefined,
-  icons: [],
-  states: null
-}
-
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   expandIcon: {
     flex: '0 0 auto',
     color: 'rgba(0, 0, 0, 0.54)',
@@ -117,9 +48,63 @@ const styles = (theme) => ({
     fontSize: '15px',
     fontWeight: 400
   }
-})
+}))
 
-const StyledExpandableListItem = withStyles(styles, { withTheme: true })(ExpandableListItem)
+export const ExpandableListItem = ({ title, subTitle, children, noBorder, icons, states, controlledExpanded, onExpand }) => {
+  const classes = useStyles()
+  const [stateExpanded, setStateExpanded] = useState(false)
 
-export { StyledExpandableListItem as ExpandableListItem }
-export default StyledExpandableListItem
+  const handleExpandClick = useCallback(() => {
+    setStateExpanded((state) => (!state))
+    onExpand?.()
+  }, [setStateExpanded])
+
+  const expanded = controlledExpanded !== undefined ? controlledExpanded : stateExpanded
+  return (
+    <Paper square className={noBorder ? classes.panelBorder : null}>
+      <List className={classes.headerPadding}>
+        <ListItem onClick={handleExpandClick} button>
+          {icons}
+          <ListItemText
+            primary={title}
+            secondary={subTitle}
+            className={classes.headerText}
+          />
+          {states}
+          <div
+            className={`${classes.expand} ${classes.expandIcon} ${expanded ? classes.expandOpen : null}`}
+          >
+            <span className={classes.expandLabel}>
+              <ExpandMoreIcon />
+            </span>
+          </div>
+        </ListItem>
+      </List>
+      <Collapse in={expanded} unmountOnExit>
+        {children}
+      </Collapse>
+    </Paper>
+  )
+}
+
+ExpandableListItem.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]),
+  title: PropTypes.node.isRequired,
+  subTitle: PropTypes.string,
+  noBorder: PropTypes.bool,
+  icons: PropTypes.arrayOf(PropTypes.element),
+  states: PropTypes.element
+}
+
+ExpandableListItem.defaultProps = {
+  children: null,
+  noBorder: false,
+  subTitle: undefined,
+  icons: [],
+  states: null
+}
+
+export default ExpandableListItem
