@@ -21,3 +21,9 @@ export { NoPic } from './NoPic'
 export { BooleanIcon } from './BooleanIcon'
 
 export { useWidth } from './useWidth'
+export { capitalize } from './string'
+export { Iterator } from './iterator'
+export { usePrevious } from './previous'
+
+export { IntegerField } from './IntegerField'
+export { IntegerWithSelectField } from './IntegerWithSelectField'
