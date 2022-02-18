@@ -80,7 +80,7 @@ export const ExpandableListItem = ({ title, subTitle, children, noBorder, icons,
           </div>
         </ListItem>
       </List>
-      <Collapse in={expanded} unmountOnExit>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
         {children}
       </Collapse>
     </Paper>
