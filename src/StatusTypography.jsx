@@ -48,18 +48,21 @@ export const StatusTypography = ({
         {...props}
         className={classNames}
         action={
-          !persistent
-            ? <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setOpen(false)
-              }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-            : null
+          <>
+            {!persistent
+              ? <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setOpen(false)
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+              : null}
+            {props?.action}
+          </>
         }
       >
         {title ? <AlertTitle>{title}</AlertTitle> : null}
