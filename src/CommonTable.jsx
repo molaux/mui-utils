@@ -220,6 +220,7 @@ const CommonTable = ({
   rowHeaders,
   noWrap,
   align,
+  size,
   verticalAlign,
   backgroundColor,
   borderLeftStyle,
@@ -344,7 +345,7 @@ const CommonTable = ({
             : null }
           {rows?.length
             ? (
-              <Table className={classes.table + (noWrap ? ` ${classes.noWrap}` : '')} aria-label="simple table">
+              <Table className={classes.table + (noWrap ? ` ${classes.noWrap}` : '')} {...size ? { size } : {}} aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     {expandable ? <TableCell /> : null}
@@ -428,6 +429,7 @@ CommonTable.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   rowHeaders: PropTypes.arrayOf(PropTypes.string),
   noWrap: PropTypes.bool,
+  size: PropTypes.string,
   align: PropTypes.shape({}),
   verticalAlign: PropTypes.shape({}),
   backgroundColor: PropTypes.func,
@@ -454,6 +456,7 @@ CommonTable.defaultProps = {
   noWrap: false,
   loading: false,
   align: undefined,
+  size: undefined,
   verticalAlign: undefined,
   backgroundColor: () => null,
   borderLeftStyle: () => null,
