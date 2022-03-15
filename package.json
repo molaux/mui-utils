@@ -1,6 +1,6 @@
 {
   "name": "@molaux/mui-utils",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A collection of helper components built with material UI",
   "main": "build/index.js",
   "scripts": {

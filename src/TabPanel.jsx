@@ -1,18 +1,28 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { styled } from '@mui/material/styles'
+import { makeStyles } from '@mui/styles'
 
-export const TabPanel = ({ children, value, index, ...other }) => (
-  <div
-    role="tabpanel"
-    hidden={value !== index}
-    id={`full-width-tabpanel-${index}`}
-    aria-labelledby={`full-width-tab-${index}`}
-    {...other}
-  >
-    {children}
-  </div>
-)
+const useStyles = makeStyles((theme) => ({
+  content: {
+    paddingTop: theme.spacing(3)
+  }
+}))
+
+export const TabPanel = ({ children, value, index, ...other }) => {
+  const classes = useStyles()
+  return (
+    <div
+      className={classes.content}
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {children}
+    </div>
+  )
+  }
 
 TabPanel.propTypes = {
   children: PropTypes.oneOfType([
@@ -27,6 +37,4 @@ TabPanel.defaultProps = {
   children: null
 }
 
-export const PaddedTabContainer = styled(TabPanel)(({ theme }) => ({
-  paddingTop: theme.spacing(3)
-}))
+export const PaddedTabContainer = TabPanel

@@ -29,7 +29,7 @@ const styles = {
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" {...props} ref={ref} />)
 
-const FullScreenDialog = ({ classes, actions, open, onClose, children, primary }) => (
+const FullScreenDialog = ({ classes, actions, open, onClose, children, primary, contentClass }) => (
   <Dialog
     open={open}
     onClose={onClose}
@@ -51,7 +51,7 @@ const FullScreenDialog = ({ classes, actions, open, onClose, children, primary }
         </IconButton>
       </Toolbar>
     </AppBar>
-    <div className={classes.content}>
+    <div className={`${classes.content} ${contentClass || ''}`}>
       {children}
     </div>
   </Dialog>
