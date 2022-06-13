@@ -59,6 +59,7 @@ module.exports = {
       "react-router-dom": "react-router-dom",
     },
     /@mui\/.*/,
+    'tss-react/mui'
   ],
   optimization: {
     nodeEnv: false

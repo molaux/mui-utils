@@ -8,10 +8,10 @@ import {
 import DownIcon from '@mui/icons-material/KeyboardArrowDown'
 import UpIcon from '@mui/icons-material/KeyboardArrowUp'
 
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 import { alpha } from '@mui/material/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   numberFieldContainer: {
     display: 'inline-flex',
     alignItems: 'stretch',
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export const IntegerField = forwardRef(({ onIntegerValueChange, integerValue, minIntegerValue, maxIntegerValue, ...props }, ref) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return <Box display="flex" alignItems="end" className={classes.numberFieldContainer}>
     <IconButton
       size="small"

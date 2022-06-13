@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Grid from '@mui/material/Grid'
 
-import { withStyles } from '@mui/styles'
+import { withStyles } from 'tss-react/mui'
 
 const Center = ({ height, classes, className, style, children }) => (
   <Grid
@@ -52,7 +52,7 @@ const styles = (theme) => ({
   }
 })
 
-const StyledCenter = withStyles(styles)(Center)
+const StyledCenter = withStyles(Center, styles)
 
 export { StyledCenter as Center }
 export default StyledCenter

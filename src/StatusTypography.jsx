@@ -6,9 +6,9 @@ import AlertTitle from '@mui/material/AlertTitle'
 import IconButton from '@mui/material/IconButton'
 import Collapse from '@mui/material/Collapse'
 import CloseIcon from '@mui/icons-material/Close'
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   gutterTop: {
     marginTop: theme.spacing(1)
   },
@@ -30,7 +30,7 @@ export const StatusTypography = ({
   timeout,
   ...props
 }) => {
-  const localClasses = useStyles()
+  const { classes: localClasses } = useStyles()
   const [open, setOpen] = React.useState(true)
   useEffect(() => {
     setOpen(true)
@@ -38,6 +38,7 @@ export const StatusTypography = ({
       const id = setTimeout(() => setOpen(false), timeout)
       return () => clearTimeout(id)
     }
+    return () => null
   }, [setOpen, timeout, children, title, error, warning, success, info])
 
   const classNames = `${gutterTop ? localClasses.gutterTop : ''} ${gutterBottom ? localClasses.gutterBottom : ''}`

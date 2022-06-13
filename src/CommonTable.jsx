@@ -20,11 +20,11 @@ import SortDescIcon from '@mui/icons-material/ArrowDownward'
 import SortAscIcon from '@mui/icons-material/ArrowUpward'
 
 
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 import isEqual from 'fast-deep-equal/es6/react'
 import Table from './TableResponsive'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   table: {
     marginBottom: theme.spacing(3),
     maxWidth: '100%'
@@ -238,7 +238,7 @@ const CommonTable = ({
   loading,
   expandable
 }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   align = useMemo(() => align, [])
   backgroundColor = backgroundColor || (() => null)
   const [statedHide] = useState(hide || [])
@@ -286,6 +286,7 @@ const CommonTable = ({
     if (!isEqual(headers, newVirtualRowsMap)) {
       setHeaders(newVirtualRowsMap)
     }
+    return () => null
   }, [setHeaders, headers, rows, statedHide, statedVirtualRowsMapProp])
 
   const [sorts, setSorts] = useState(

@@ -7,9 +7,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Collapse from '@mui/material/Collapse'
 import Paper from '@mui/material/Paper'
 
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   expandIcon: {
     flex: '0 0 auto',
     color: 'rgba(0, 0, 0, 0.54)',
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export const ExpandableListItem = ({ title, subTitle, children, noBorder, icons, states, controlledExpanded, onExpand }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const [stateExpanded, setStateExpanded] = useState(false)
 
   const handleExpandClick = useCallback(() => {

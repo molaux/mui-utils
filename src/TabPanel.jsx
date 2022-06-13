@@ -1,15 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   content: {
     paddingTop: theme.spacing(3)
   }
 }))
 
 export const TabPanel = ({ children, value, index, ...other }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <div
       className={classes.content}

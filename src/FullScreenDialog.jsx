@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import CloseIcon from '@mui/icons-material/Close'
 import Slide from '@mui/material/Slide'
-import { withStyles } from '@mui/styles'
+import { withStyles } from 'tss-react/mui'
 
 const styles = {
   appBar: {
@@ -81,7 +81,7 @@ FullScreenDialog.defaultProps = {
   open: true
 }
 
-const StyledFullScreenDialog = withStyles(styles)(FullScreenDialog)
+const StyledFullScreenDialog = withStyles(FullScreenDialog, styles)
 
 export { StyledFullScreenDialog as FullScreenDialog }
 export default StyledFullScreenDialog

@@ -10,12 +10,12 @@ import {
 import DownIcon from '@mui/icons-material/KeyboardArrowDown'
 import UpIcon from '@mui/icons-material/KeyboardArrowUp'
 
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 import { alpha } from '@mui/material/styles'
 
 import plural from 'pluralize-fr'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   numberFieldContainer: {
     color: theme.palette.text.primary,
     display: 'inline-flex',
@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export const IntegerWithSelectField = forwardRef(({ onIntegerValueChange, integerValue, minIntegerValue, maxIntegerValue, onSelectValueChange, selectValue, selectValues, pluralize, multiple, renderValue, ...props }, ref) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return <Box display="flex" alignItems="end" className={classes.numberFieldContainer}>
       <IconButton
         size="small"

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Table from '@mui/material/Table'
-import { withStyles } from '@mui/styles'
+import { withStyles } from 'tss-react/mui'
 
 const styles = (theme) => ({
   root: {
@@ -34,7 +34,7 @@ TableResponsive.defaultProps = {
   children: null
 }
 
-const StyledTableResponsive = withStyles(styles)(TableResponsive)
+const StyledTableResponsive = withStyles(TableResponsive, styles)
 
 export { StyledTableResponsive as TableResponsive }
 export default StyledTableResponsive

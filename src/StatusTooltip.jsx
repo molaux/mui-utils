@@ -3,25 +3,21 @@ import PropTypes from 'prop-types'
 import { Tooltip } from '@mui/material'
 import Zoom from '@mui/material/Zoom'
 
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from 'tss-react/mui'
 
 import { StatusTypography } from './StatusTypography'
 
-const useStyles = makeStyles((theme) => ({
-  arrow: ({
-    error,
-    warning,
-    success
-  }) => ({
+const useStyles = makeStyles()((theme, {
+  error,
+  warning,
+  success
+}) => ({
+  arrow: {
     color: theme.palette[error ? 'error' : warning ? 'warning' : success ? 'success' : 'info'].main
-  }),
-  tooltip: ({
-    error,
-    warning,
-    success
-  }) => ({
+  },
+  tooltip: {
     backgroundColor: theme.palette[error ? 'error' : warning ? 'warning' : success ? 'success' : 'info'].main
-  })
+  }
 }))
 
 export const StatusTooltip = ({
@@ -35,7 +31,7 @@ export const StatusTooltip = ({
   title,
   children
 }) => {
-  const classes = useStyles({
+  const { classes } = useStyles({
     error,
     warning,
     success

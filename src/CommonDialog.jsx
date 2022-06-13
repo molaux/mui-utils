@@ -7,7 +7,7 @@ import Dialog from '@mui/material/Dialog'
 import MuiDialogContent from '@mui/material/DialogContent'
 import Button from '@mui/material/Button'
 import Slide from '@mui/material/Slide'
-import { withStyles } from '@mui/styles'
+import { withStyles } from 'tss-react/mui'
 import { useTheme, useMediaQuery } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -29,7 +29,7 @@ const styles = (theme) => ({
   }
 })
 
-const DialogTitle = withStyles(styles)((props) => {
+const DialogTitle = withStyles((props) => {
   const { children, classes, onClose, ...other } = props
   return (
     <MuiDialogTitle className={classes.root} {...other}>
@@ -43,20 +43,20 @@ const DialogTitle = withStyles(styles)((props) => {
         : null}
     </MuiDialogTitle>
   )
-})
+}, styles)
 
-const DialogContent = withStyles((theme) => ({
+const DialogContent = withStyles(MuiDialogContent, (theme) => ({
   root: {
     padding: theme.spacing(2)
   }
-}))(MuiDialogContent)
+}))
 
-const DialogActions = withStyles((theme) => ({
+const DialogActions = withStyles(MuiDialogActions, (theme) => ({
   root: {
     margin: 0,
     padding: theme.spacing(1)
   }
-}))(MuiDialogActions)
+}))
 
 // const ResponsiveDialog = withMobileDialog()(Dialog)
 const CommonDialog = ({ open, title, onClose, children, classes }) => {
