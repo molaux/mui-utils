@@ -236,7 +236,8 @@ const CommonTable = ({
   controlledRowsPerPageOptions,
   controlledTotal,
   loading,
-  expandable
+  expandable,
+  headers: colHeaders
 }) => {
   const { classes } = useStyles()
   align = useMemo(() => align, [])
@@ -249,12 +250,18 @@ const CommonTable = ({
   const [headers, setHeaders] = useState(rows.length
     ? buildVirtualRowsMap(Object.keys(rows[0])
       .filter((h) => !statedHide.includes(h) && (!expandable || h !== 'expand')), statedVirtualRowsMapProp)
-    : {})
+    : [])
   const [page, setPage] = React.useState(0)
   const rowsPerPageOptions = controlledRowsPerPageOptions || [25, 50, 100, { value: -1, label: 'Tout' }]
   const [rowsPerPage, _setRowsPerPage] = React.useState(
     parseInt(window.localStorage.getItem('common-table-rows-per-page'), 10) || rowsPerPageOptions[0]
   )
+
+  useEffect(() => {
+    if (page * rowsPerPage > rows.length) {
+      setPage(Math.floor(Math.abs((rows.length - 1) / rowsPerPage)))
+    }
+  }, [rows, rowsPerPage, page, setPage])
   const setRowsPerPage = (rpp) => {
     window.localStorage.setItem('common-table-rows-per-page', rpp)
     _setRowsPerPage(rpp)
@@ -287,7 +294,7 @@ const CommonTable = ({
       setHeaders(newVirtualRowsMap)
     }
     return () => null
-  }, [setHeaders, headers, rows, statedHide, statedVirtualRowsMapProp])
+  }, [setHeaders, headers, rows, statedHide, statedVirtualRowsMapProp, colHeaders])
 
   const [sorts, setSorts] = useState(
     Object.values(sortableHeaders).reduce((o, key) => ({ ...o, [key]: null }), {})
@@ -374,7 +381,9 @@ const CommonTable = ({
                                   : null}
                               </Button>
                               )
-                            : header}
+                            : header in colHeaders
+                              ? colHeaders[header]
+                              : header}
                         </TableCell>
                       ))}
                   </TableRow>
@@ -449,7 +458,8 @@ CommonTable.propTypes = {
     PropTypes.number,
     PropTypes.shape({})
   ])),
-  controlledTotal: PropTypes.number
+  controlledTotal: PropTypes.number,
+  headers: PropTypes.shape({})
 }
 
 CommonTable.defaultProps = {
@@ -471,7 +481,8 @@ CommonTable.defaultProps = {
   onControlledPageChange: undefined,
   controlledRowsPerPage: undefined,
   controlledRowsPerPageOptions: undefined,
-  controlledTotal: undefined
+  controlledTotal: undefined,
+  headers: {}
 }
 
 export { CommonTable }
