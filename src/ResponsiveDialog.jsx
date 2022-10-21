@@ -10,17 +10,22 @@ const Transition = React.forwardRef((props, ref) => <Slide direction="up" {...pr
 // const ResponsiveDialog = withMobileDialog()(Dialog)
 const ResponsiveDialog = ({ children, ...other }) => {
   const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
-  return (
-    <Dialog
-      maxWidth="xl"
-      TransitionComponent={Transition}
-      fullScreen={fullScreen}
-      {...other}
-    >
-      {children}
-    </Dialog>
-  )
+  try {
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'), { matchMedia: window.matchMedia.bind(window), noSsr: true })
+    return (
+      <Dialog
+        maxWidth="xl"
+        TransitionComponent={Transition}
+        fullScreen={fullScreen}
+        {...other}
+        >
+        {children}
+      </Dialog>
+    )
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
 }
 
 ResponsiveDialog.propTypes = {
