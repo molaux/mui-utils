@@ -64,6 +64,19 @@ const Row = memo(({
   nesting
 }) => {
   const [open, setOpen] = React.useState(false)
+  // console.log('row')
+  // useEffect(() => { console.log('backgroundColor') }, [backgroundColor])
+  // useEffect(() => { console.log('headers') }, [headers])
+  // useEffect(() => { console.log('rowHeaders') }, [rowHeaders])
+  // useEffect(() => { console.log('row') }, [row])
+  // useEffect(() => { console.log('alignCell') }, [alignCell])
+  // useEffect(() => { console.log('verticalAlignCell') }, [verticalAlignCell])
+  // useEffect(() => { console.log('virtualRowClass') }, [virtualRowClass])
+  // useEffect(() => { console.log('borderLeftStyle') }, [borderLeftStyle])
+  // useEffect(() => { console.log('expandable') }, [expandable])
+  // useEffect(() => { console.log('collapsable') }, [collapsable])
+  // useEffect(() => { console.log('controlledOpen') }, [controlledOpen])
+  // useEffect(() => { console.log('nesting') }, [nesting])
   return (
     <>
       {Object.keys(headers)
@@ -147,8 +160,7 @@ const Row = memo(({
       ])}
     </>
     )
-  }
-, isEqual)
+  })
 
 Row.propTypes = {
   backgroundColor: PropTypes.func,
