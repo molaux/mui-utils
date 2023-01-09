@@ -29,7 +29,7 @@ const styles = (theme) => ({
   }
 })
 
-const DialogTitle = withStyles((props) => {
+export const DialogTitle = withStyles((props) => {
   const { children, classes, onClose, ...other } = props
   return (
     <MuiDialogTitle className={classes.root} {...other}>
@@ -45,13 +45,13 @@ const DialogTitle = withStyles((props) => {
   )
 }, styles)
 
-const DialogContent = withStyles(MuiDialogContent, (theme) => ({
+export const DialogContent = withStyles(MuiDialogContent, (theme) => ({
   root: {
     padding: theme.spacing(2)
   }
 }))
 
-const DialogActions = withStyles(MuiDialogActions, (theme) => ({
+export const DialogActions = withStyles(MuiDialogActions, (theme) => ({
   root: {
     margin: 0,
     padding: theme.spacing(1)

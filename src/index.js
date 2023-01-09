@@ -5,7 +5,7 @@ export { TableResponsive } from './TableResponsive'
 
 export { InfoDialog } from './InfoDialog'
 export { ResponsiveDialog } from './ResponsiveDialog'
-export { CommonDialog } from './CommonDialog'
+export { CommonDialog, DialogTitle, DialogContent, DialogActions } from './CommonDialog'
 export { FullScreenDialog } from './FullScreenDialog'
 
 export { Variation } from './Variation'

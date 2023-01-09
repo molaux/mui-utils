@@ -2,12 +2,15 @@ import React, { useCallback, useState, memo, useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import Color from 'color'
+import Paper from '@mui/material/Paper'
+import TableContainer from '@mui/material/TableContainer'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Button from '@mui/material/Button'
 import TablePagination from '@mui/material/TablePagination'
+import Table from '@mui/material/Table'
 import LinearProgress from '@mui/material/LinearProgress'
 import Box from '@mui/material/Box'
 
@@ -22,12 +25,11 @@ import SortAscIcon from '@mui/icons-material/ArrowUpward'
 
 import { makeStyles } from 'tss-react/mui'
 import isEqual from 'fast-deep-equal/es6/react'
-import Table from './TableResponsive'
 
 const useStyles = makeStyles()((theme) => ({
   table: {
-    marginBottom: theme.spacing(3),
-    maxWidth: '100%'
+    // marginBottom: theme.spacing(3),
+    // maxWidth: '100%'
   },
   noWrap: {
     '& td': {
@@ -215,7 +217,8 @@ const TablePaginationCell = ({
   rowsPerPage,
   page,
   onChangePage,
-  onChangeRowsPerPage
+  onChangeRowsPerPage,
+  ...props
 }) => (
   <TablePagination
     component="div"
@@ -227,6 +230,7 @@ const TablePaginationCell = ({
     onRowsPerPageChange={onChangeRowsPerPage}
     labelRowsPerPage="Lignes :"
     labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count !== -1 ? count : `plus de ${to}`}`}
+    {...props}
   />
 )
 
@@ -267,7 +271,10 @@ const CommonTable = ({
   controlledTotal,
   loading,
   expandable,
-  headers: colHeaders
+  headers: colHeaders,
+  stickyHeader,
+  sx,
+  maxHeight
 }) => {
   const { classes } = useStyles()
   align = useMemo(() => align, [])
@@ -364,104 +371,91 @@ const CommonTable = ({
       ? <Box sx={{ width: '100%' }}><LinearProgress /></Box>
       : (
         <>
-          { (pagination === undefined &&
-            (controlledTotal !== undefined
-              ? controlledTotal
-              : rows.length) > rowsPerPageOptions[0]) ||
-            pagination
-            ? (
-              <TablePaginationCell
-                rowsPerPageOptions={rowsPerPageOptions}
-                count={controlledTotal !== undefined ? controlledTotal : rows.length}
-                rowsPerPage={controlledRowsPerPage !== undefined
-                  ? controlledRowsPerPage
-                  : rowsPerPage}
-                page={controlledPage !== undefined ? controlledPage : page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-              />
-              )
-            : null }
           {rows?.length
             ? (
-              <Table className={classes.table + (noWrap ? ` ${classes.noWrap}` : '')} {...size ? { size } : {}} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    {expandable ? <TableCell /> : null}
-                    {Object.keys(headers[0])
-                      .map((header, index) => (
-                        <TableCell
-                          // eslint-disable-next-line react/no-array-index-key
-                          key={index}
-                          align={alignCell(header)}
-                          sx={{ verticalAlign: verticalAlignCell(header) }}
-                        >
-                          {header in sortableHeaders
-                            ? (
-                              <Button
-                                onClick={() => handleSort(sortableHeaders[header])}
-                                sx={{ textTransform: 'none', color: 'inherit' }}
-                              >
-                                {header}
-                                {sorts[sortableHeaders[header]] !== null
-                                  ? (
-                                      sorts[sortableHeaders[header]] === true
-                                        ? <SortAscIcon />
-                                        : <SortDescIcon />
-                                    )
-                                  : null}
-                              </Button>
-                              )
-                            : header in colHeaders
-                              ? colHeaders[header]
-                              : header}
-                        </TableCell>
+              <Paper elevation={0} sx={{ width: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', ...sx }}>
+                <TableContainer sx={{ ...maxHeight ? { maxHeight } : {}}}>
+                  <Table stickyHeader={stickyHeader} {...size ? { size } : {}} className={classes.table + (noWrap ? ` ${classes.noWrap}` : '')}>
+                    <TableHead>
+                      <TableRow>
+                        {expandable ? <TableCell /> : null}
+                        {Object.keys(headers[0])
+                          .map((header, index) => (
+                            <TableCell
+                              // eslint-disable-next-line react/no-array-index-key
+                              key={index}
+                              align={alignCell(header)}
+                              sx={{ verticalAlign: verticalAlignCell(header) }}
+                            >
+                              {header in sortableHeaders
+                                ? (
+                                  <Button
+                                    onClick={() => handleSort(sortableHeaders[header])}
+                                    sx={{ textTransform: 'none', color: 'inherit' }}
+                                  >
+                                    {header}
+                                    {sorts[sortableHeaders[header]] !== null
+                                      ? (
+                                          sorts[sortableHeaders[header]] === true
+                                            ? <SortAscIcon />
+                                            : <SortDescIcon />
+                                        )
+                                      : null}
+                                  </Button>
+                                  )
+                                : header in colHeaders
+                                  ? colHeaders[header]
+                                  : header}
+                            </TableCell>
+                          ))}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {(controlledRowsPerPage === undefined && rowsPerPage > 0
+                        ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : rows
+                      ).map((row, index) => (
+                        <Row
+                          key={keys ? keys(row) : index}
+                          backgroundColor={backgroundColor}
+                          background={background}
+                          borderLeftStyle={borderLeftStyle}
+                          headers={headers}
+                          rowHeaders={statedRowHeaders}
+                          row={row}
+                          alignCell={alignCell}
+                          verticalAlignCell={verticalAlignCell}
+                          virtualRowClass={classes.virtualRow}
+                          expandable={expandable}
+                        />
                       ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {(controlledRowsPerPage === undefined && rowsPerPage > 0
-                    ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    : rows
-                  ).map((row, index) => (
-                    <Row
-                      key={keys ? keys(row) : index}
-                      backgroundColor={backgroundColor}
-                      background={background}
-                      borderLeftStyle={borderLeftStyle}
-                      headers={headers}
-                      rowHeaders={statedRowHeaders}
-                      row={row}
-                      alignCell={alignCell}
-                      verticalAlignCell={verticalAlignCell}
-                      virtualRowClass={classes.virtualRow}
-                      expandable={expandable}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                { (pagination === undefined &&
+                  (controlledTotal !== undefined
+                    ? controlledTotal
+                    : rows.length) > rowsPerPageOptions[0]) ||
+                  pagination
+                  ? (
+                    <TablePaginationCell
+                      sx={{ flex: '0 0 auto' }}
+                      rowsPerPageOptions={rowsPerPageOptions}
+                      count={controlledTotal !== undefined ? controlledTotal : rows.length}
+                      rowsPerPage={controlledRowsPerPage !== undefined
+                        ? controlledRowsPerPage
+                        : rowsPerPage}
+                      page={controlledPage !== undefined ? controlledPage : page}
+                      onChangePage={handleChangePage}
+                      onChangeRowsPerPage={handleChangeRowsPerPage}
                     />
-                  ))}
-                </TableBody>
-              </Table>
+                    )
+                  : null }
+              </Paper>
               )
             : controlledTotal !== undefined && controlledTotal
               ? <Box sx={{ width: '100%' }}><LinearProgress /></Box>
               : <Box sx={{ width: '100%' }}>Aucune donnée.</Box>}
-          { (pagination === undefined &&
-            (controlledTotal !== undefined
-              ? controlledTotal
-              : rows.length) > rowsPerPageOptions[0]) ||
-            pagination
-            ? (
-              <TablePaginationCell
-                rowsPerPageOptions={rowsPerPageOptions}
-                count={controlledTotal !== undefined ? controlledTotal : rows.length}
-                rowsPerPage={controlledRowsPerPage !== undefined
-                  ? controlledRowsPerPage
-                  : rowsPerPage}
-                page={controlledPage !== undefined ? controlledPage : page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-              />
-              )
-            : null }
         </>
         )
   )
@@ -472,10 +466,12 @@ CommonTable.propTypes = {
   rowHeaders: PropTypes.arrayOf(PropTypes.string),
   noWrap: PropTypes.bool,
   size: PropTypes.string,
+  maxHeight: PropTypes.string,
   align: PropTypes.shape({}),
   verticalAlign: PropTypes.shape({}),
   backgroundColor: PropTypes.func,
   background: PropTypes.func,
+  stickyHeader: PropTypes.bool,
   borderLeftStyle: PropTypes.func,
   hide: PropTypes.arrayOf(PropTypes.string),
   keys: PropTypes.func,
@@ -492,10 +488,12 @@ CommonTable.propTypes = {
     PropTypes.shape({})
   ])),
   controlledTotal: PropTypes.number,
-  headers: PropTypes.shape({})
+  headers: PropTypes.shape({}),
+  sx: PropTypes.shape({})
 }
 
 CommonTable.defaultProps = {
+  stickyHeader: false,
   rowHeaders: [],
   noWrap: false,
   loading: false,
@@ -507,6 +505,7 @@ CommonTable.defaultProps = {
   borderLeftStyle: () => null,
   hide: [],
   keys: null,
+  maxHeight: null,
   virtualRowsMap: {},
   pagination: undefined,
   onSortHeader: null,
@@ -516,7 +515,8 @@ CommonTable.defaultProps = {
   controlledRowsPerPage: undefined,
   controlledRowsPerPageOptions: undefined,
   controlledTotal: undefined,
-  headers: {}
+  headers: {},
+  sx: {}
 }
 
 export { CommonTable }
