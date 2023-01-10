@@ -54,6 +54,7 @@ const Collapsable = ({ open, children }) => open !== undefined
 const Row = memo(({
   backgroundColor,
   background,
+  color,
   headers,
   rowHeaders,
   row,
@@ -96,7 +97,10 @@ const Row = memo(({
                   : {}),
                 ...(backgroundColor(row) !== null
                   ? { backgroundColor: backgroundColor(row) }
-                  : { backgroundColor: (theme) => Color(theme.palette.background.paper).darken((nesting ?? 0)/20).hex() })
+                  : { backgroundColor: (theme) => Color(theme.palette.background.paper).darken((nesting ?? 0)/20).hex() }),
+                ...(color(row) !== null
+                  ? { color: color(row) }
+                  : {})
               }}
               className={(parseInt(line, 10) + 1) >= Object.keys(headers).length
                 ? null
@@ -131,7 +135,16 @@ const Row = memo(({
                       : {}),
                     ...(headers[line][header].rowSpan || 1 > 2 && background(row) !== null
                         ? { background: background(row) }
-                        : {})
+                        : {}),
+                    ...(background(row, header) !== null
+                      ? { background: background(row, header) }
+                      : {}),
+                    ...(backgroundColor(row, header) !== null
+                      ? { backgroundColor: backgroundColor(row, header) }
+                      : { }),
+                    ...(color(row, header) !== null
+                      ? { color: color(row, header) }
+                      : { })
                   }}
                   component={rowHeaders.includes(header) ? 'th' : 'td'}
                   {...headers[line][header]}
@@ -159,6 +172,7 @@ const Row = memo(({
                     <Row
                       key={i}
                       backgroundColor={backgroundColor}
+                      color={color}
                       background={background}
                       headers={headers}
                       rowHeaders={rowHeaders}
@@ -181,6 +195,7 @@ const Row = memo(({
 
 Row.propTypes = {
   backgroundColor: PropTypes.func,
+  color: PropTypes.func,
   background: PropTypes.func,
   borderLeftStyle: PropTypes.func,
   headers: PropTypes.shape({}).isRequired,
@@ -193,6 +208,7 @@ Row.propTypes = {
 
 Row.defaultProps = {
   backgroundColor: null,
+  color: null,
   background: null,
   borderLeftStyle: null,
   virtualRowClass: ''
@@ -256,6 +272,7 @@ const CommonTable = ({
   size,
   verticalAlign,
   backgroundColor,
+  color,
   background,
   borderLeftStyle,
   hide,
@@ -279,6 +296,7 @@ const CommonTable = ({
   const { classes } = useStyles()
   align = useMemo(() => align, [])
   backgroundColor = backgroundColor || (() => null)
+  color = color || (() => null)
   background = background || (() => null)
   const [statedHide] = useState(hide || [])
   const [statedRowHeaders] = useState(rowHeaders || [])
@@ -418,6 +436,7 @@ const CommonTable = ({
                         <Row
                           key={keys ? keys(row) : index}
                           backgroundColor={backgroundColor}
+                          color={color}
                           background={background}
                           borderLeftStyle={borderLeftStyle}
                           headers={headers}
@@ -471,6 +490,7 @@ CommonTable.propTypes = {
   verticalAlign: PropTypes.shape({}),
   backgroundColor: PropTypes.func,
   background: PropTypes.func,
+  color: PropTypes.func,
   stickyHeader: PropTypes.bool,
   borderLeftStyle: PropTypes.func,
   hide: PropTypes.arrayOf(PropTypes.string),
@@ -501,6 +521,7 @@ CommonTable.defaultProps = {
   size: undefined,
   verticalAlign: undefined,
   backgroundColor: () => null,
+  color: () => null,
   background: () => null,
   borderLeftStyle: () => null,
   hide: [],

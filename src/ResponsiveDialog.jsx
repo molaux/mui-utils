@@ -8,7 +8,7 @@ import { useTheme, useMediaQuery } from '@mui/material'
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" {...props} ref={ref} />)
 
 // const ResponsiveDialog = withMobileDialog()(Dialog)
-const ResponsiveDialog = ({ children, ...other }) => {
+const ResponsiveDialog = ({ fullScreen: userFullScreen, children, ...other }) => {
   const theme = useTheme()
   try {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'), { matchMedia: window.matchMedia.bind(window), noSsr: true })
@@ -16,7 +16,7 @@ const ResponsiveDialog = ({ children, ...other }) => {
       <Dialog
         maxWidth="xl"
         TransitionComponent={Transition}
-        fullScreen={fullScreen}
+        fullScreen={fullScreen || userFullScreen}
         {...other}
         >
         {children}
@@ -32,11 +32,13 @@ ResponsiveDialog.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
-  ])
+  ]),
+  fullScreen: PropTypes.bool
 }
 
 ResponsiveDialog.defaultProps = {
-  children: null
+  children: null,
+  fullScreen: false
 }
 
 export { ResponsiveDialog }
