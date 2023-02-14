@@ -9,6 +9,7 @@ export { CommonDialog, DialogTitle, DialogContent, DialogActions } from './Commo
 export { FullScreenDialog } from './FullScreenDialog'
 
 export { Variation } from './Variation'
+export { Share } from './Share'
 export { StatusTypography } from './StatusTypography'
 export { StatusTooltip } from './StatusTooltip'
 
