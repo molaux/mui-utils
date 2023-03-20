@@ -2,7 +2,7 @@ import React from 'react'
 import PieIcon from './Pie'
 import Box from '@mui/material/Box'
 
-export const ShareValue = ({value, iconOnly, size}) => isNaN(value) 
+export const ShareValue = ({ value, iconOnly, size }) => isNaN(value) 
   ? null
   : <>
     <PieIcon
